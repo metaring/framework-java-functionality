@@ -18,13 +18,12 @@ package com.metaring.framework.functionality;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-
 import com.metaring.framework.Core;
 import com.metaring.framework.exception.ManagedException;
 import com.metaring.framework.type.DataRepresentation;
-import com.metaring.framework.util.JVMCallStackUtilities;
 import com.metaring.framework.util.StringUtil;
 
 public class FunctionalitiesManager {
@@ -163,9 +162,8 @@ public class FunctionalitiesManager {
 
     protected static final Functionality getCallingFunctionality() {
         try {
-            return (Functionality) JVMCallStackUtilities.getCaller(2);
-        }
-        catch (Exception e) {
+            return FunctionalitiesProvider.getFunctionalityByClassName(Arrays.asList(Thread.currentThread().getStackTrace()).stream().map(StackTraceElement::getClassName).filter(it -> it.endsWith("FunctionalityImpl")).findFirst().get());
+        } catch (Exception e) {
         }
         return null;
     }

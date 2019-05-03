@@ -28,12 +28,17 @@ public final class FunctionalitiesProvider {
 
     private static final Map<String, Class<? extends Functionality>> CACHE = new HashMap<>();
     private static final Map<String, AbstractFunctionality> INJECTIONS = new HashMap<>();
+    private static final Map<String, AbstractFunctionality> CLASSES_DICTIONARY = new HashMap<>();
 
     public static final AbstractFunctionality getFunctionality(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass, SysKB sysKB) throws FunctionalityCreationException {
         if(!INJECTIONS.containsKey(functionalityInfo.getFunctionalityFullyQualifiedName())) {
             return createFunctionality(functionalityInfo, functionalityClass, sysKB);
         }
         return INJECTIONS.get(functionalityInfo.getFunctionalityFullyQualifiedName());
+    }
+
+    public static final AbstractFunctionality getFunctionalityByClassName(String className) {
+        return CLASSES_DICTIONARY.get(className);
     }
 
     private static final AbstractFunctionality createFunctionality(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass, SysKB sysKB) throws FunctionalityCreationException {
@@ -43,6 +48,7 @@ public final class FunctionalitiesProvider {
             createMethod.setAccessible(true);
             AbstractFunctionality functionality = (AbstractFunctionality) createMethod.invoke(null, sysKB);
             INJECTIONS.put(functionalityInfo.getFunctionalityFullyQualifiedName(), functionality);
+            CLASSES_DICTIONARY.put(functionality.getClass().getName(), functionality);
             return functionality;
         } catch (Exception e) {
             throw new FunctionalityCreationException(functionalityInfo.getFunctionalityFullyQualifiedName(), e);
