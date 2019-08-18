@@ -16,11 +16,10 @@
 
 package com.metaring.framework.functionality;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.metaring.framework.SysKB;
 import com.metaring.framework.util.StringUtil;
 
 @SuppressWarnings("unchecked")
@@ -30,9 +29,9 @@ public final class FunctionalitiesProvider {
     private static final Map<String, AbstractFunctionality> INJECTIONS = new HashMap<>();
     private static final Map<String, AbstractFunctionality> CLASSES_DICTIONARY = new HashMap<>();
 
-    public static final AbstractFunctionality getFunctionality(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass, SysKB sysKB) throws FunctionalityCreationException {
+    public static final AbstractFunctionality getFunctionality(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass) throws FunctionalityCreationException {
         if(!INJECTIONS.containsKey(functionalityInfo.getFunctionalityFullyQualifiedName())) {
-            return createFunctionality(functionalityInfo, functionalityClass, sysKB);
+            return createFunctionality(functionalityInfo, functionalityClass);
         }
         return INJECTIONS.get(functionalityInfo.getFunctionalityFullyQualifiedName());
     }
@@ -41,12 +40,12 @@ public final class FunctionalitiesProvider {
         return CLASSES_DICTIONARY.get(className);
     }
 
-    private static final AbstractFunctionality createFunctionality(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass, SysKB sysKB) throws FunctionalityCreationException {
+    private static final AbstractFunctionality createFunctionality(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass) throws FunctionalityCreationException {
         try {
             functionalityClass = FunctionalitiesProvider.load(functionalityInfo.getFunctionalityFullyQualifiedName(), functionalityClass);
-            Method createMethod = functionalityClass.getDeclaredMethod("create", SysKB.class);
-            createMethod.setAccessible(true);
-            AbstractFunctionality functionality = (AbstractFunctionality) createMethod.invoke(null, sysKB);
+            Field instanceField = functionalityClass.getDeclaredField("INSTANCE");
+            instanceField.setAccessible(true);
+            AbstractFunctionality functionality = (AbstractFunctionality) instanceField.get(null);
             INJECTIONS.put(functionalityInfo.getFunctionalityFullyQualifiedName(), functionality);
             CLASSES_DICTIONARY.put(functionality.getClass().getName(), functionality);
             return functionality;
@@ -63,8 +62,7 @@ public final class FunctionalitiesProvider {
                 className = className + "Functionality";
                 try {
                     functionalityClass = (Class<? extends Functionality>) Class.forName(className);
-                }
-                catch (ClassNotFoundException e) {
+                } catch (ClassNotFoundException e) {
                     throw new FunctionalityNotFoundException(functionalityName, e);
                 }
             }

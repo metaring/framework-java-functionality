@@ -138,7 +138,7 @@ public class FunctionalitiesManager {
 
     private static final CompletableFuture<FunctionalityExecutionResult> executeWork(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass, Functionality callingFunctionality, Object input, boolean fromJson) {
         try {
-            AbstractFunctionality functionality = FunctionalitiesProvider.getFunctionality(functionalityInfo, functionalityClass, callingFunctionality == null ? Core.SYSKB : callingFunctionality.getSysKB());
+            AbstractFunctionality functionality = FunctionalitiesProvider.getFunctionality(functionalityInfo, functionalityClass);
             return functionality.execute(callingFunctionality == null ? new FunctionalityContext() : callingFunctionality.getContext(), fromJson ? functionality.getInputFromJson(input == null ? null : input.toString()) : input);
         } catch (FunctionalityCreationException e) {
             return completedFuture(launchCreationUnmanagedError(callingFunctionality, e));
@@ -164,7 +164,7 @@ public class FunctionalitiesManager {
         try {
             return FunctionalitiesProvider.getFunctionalityByClassName(Arrays.asList(Thread.currentThread().getStackTrace()).stream().map(StackTraceElement::getClassName).filter(it -> it.endsWith("FunctionalityImpl")).findFirst().get());
         } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 }

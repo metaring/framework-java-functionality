@@ -28,9 +28,7 @@ import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
 
 import com.ea.async.Async;
-
 import com.metaring.framework.GeneratedCoreType;
-import com.metaring.framework.SysKB;
 import com.metaring.framework.Tools;
 import com.metaring.framework.controller.AbstractBaseController;
 import com.metaring.framework.exception.ManagedException;
@@ -61,8 +59,8 @@ public abstract class AbstractFunctionality extends AbstractBaseController imple
         Async.init();
     }
 
-    protected AbstractFunctionality(SysKB sysKB, FunctionalityInfo functionalityInfo, Class<?> outputClass) {
-        super(sysKB);
+    protected AbstractFunctionality(FunctionalityInfo functionalityInfo, Class<?> outputClass) {
+        super();
         this.functionalityInfo = functionalityInfo;
         this.functionalityName = "[" + functionalityInfo.getFunctionalityFullyQualifiedName() + "] [";
         this.outputClass = outputClass;

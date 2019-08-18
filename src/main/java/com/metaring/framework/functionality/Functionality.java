@@ -16,16 +16,12 @@
 
 package com.metaring.framework.functionality;
 
-import com.metaring.framework.SysKB;
-
 public interface Functionality {
     public FunctionalityInfo getInfo();
 
     public FunctionalityExecutionStepEnumerator getCurrentStep();
 
     public FunctionalityContext getContext();
-
-    public SysKB getSysKB();
 
     public Object getInputFromJson(String json);
 }
