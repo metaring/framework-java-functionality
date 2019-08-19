@@ -110,6 +110,58 @@ public abstract class AbstractFunctionalityExecutionResult implements GeneratedC
         return functionalityExecutionResult;
     }
 
+    public static FunctionalityExecutionResult fromObject(Object object) {
+
+        if(object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+
+        FunctionalityExecutionVerdictEnumerator verdict = null;
+        if(dataRepresentation.hasProperty("verdict")) {
+            try {
+                verdict = dataRepresentation.get("verdict", FunctionalityExecutionVerdictEnumerator.class);
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityExecutionWarningDataSeries warningData = null;
+        if(dataRepresentation.hasProperty("warningData")) {
+            try {
+                warningData = dataRepresentation.get("warningData", FunctionalityExecutionWarningDataSeries.class);
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityExecutionError errorData = null;
+        if(dataRepresentation.hasProperty("errorData")) {
+            try {
+                errorData = dataRepresentation.get("errorData", FunctionalityExecutionError.class);
+            } catch (Exception e) {
+            }
+        }
+
+        String resultIdentificator = null;
+        if(dataRepresentation.hasProperty("resultIdentificator")) {
+            try {
+                resultIdentificator = dataRepresentation.getText("resultIdentificator");
+            } catch (Exception e) {
+            }
+        }
+
+        DataRepresentation result = null;
+        if(dataRepresentation.hasProperty("result")) {
+            try {
+                result = dataRepresentation.get("result");
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityExecutionResult functionalityExecutionResult = create(verdict, warningData, errorData, resultIdentificator, result);
+        return functionalityExecutionResult;
+    }
+
     public DataRepresentation toDataRepresentation() {
         DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.create();
         if (verdict != null) {

@@ -167,6 +167,19 @@ public class FunctionalityStackElementSeries extends ArrayList<FunctionalityStac
         return new FunctionalityStackElementSeries(list);
     }
 
+    public static FunctionalityStackElementSeries fromObject(Object object) {
+        if (object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+        List<FunctionalityStackElement> list = new ArrayList<>();
+        for(DataRepresentation data : dataRepresentation) {
+            list.add(FunctionalityStackElement.fromJson(data.asText()));
+        }
+        return new FunctionalityStackElementSeries(list);
+    }
+
     public DataRepresentation toDataRepresentation() {
         return Tools.FACTORY_DATA_REPRESENTATION.fromJson(toJson());
     }

@@ -66,6 +66,34 @@ public class FunctionalityExecutionWarningData implements GeneratedCoreType {
         return functionalityExecutionWarningData;
     }
 
+    public static FunctionalityExecutionWarningData fromObject(Object object) {
+
+        if(object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+
+        FunctionalityExecutionStepEnumerator step = null;
+        if(dataRepresentation.hasProperty("step")) {
+            try {
+                step = dataRepresentation.get("step", FunctionalityExecutionStepEnumerator.class);
+            } catch (Exception e) {
+            }
+        }
+
+        String message = null;
+        if(dataRepresentation.hasProperty("message")) {
+            try {
+                message = dataRepresentation.getText("message");
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityExecutionWarningData functionalityExecutionWarningData = create(step, message);
+        return functionalityExecutionWarningData;
+    }
+
     public DataRepresentation toDataRepresentation() {
         DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.create();
         if (step != null) {

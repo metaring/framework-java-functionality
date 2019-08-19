@@ -109,6 +109,58 @@ public class FunctionalityStepErrorData implements GeneratedCoreType {
         return functionalityStepErrorData;
     }
 
+    public static FunctionalityStepErrorData fromObject(Object object) {
+
+        if(object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+
+        FunctionalityErrorTypeEnumerator type = null;
+        if(dataRepresentation.hasProperty("type")) {
+            try {
+                type = dataRepresentation.get("type", FunctionalityErrorTypeEnumerator.class);
+            } catch (Exception e) {
+            }
+        }
+
+        String name = null;
+        if(dataRepresentation.hasProperty("name")) {
+            try {
+                name = dataRepresentation.getText("name");
+            } catch (Exception e) {
+            }
+        }
+
+        TextSeries payload = null;
+        if(dataRepresentation.hasProperty("payload")) {
+            try {
+                payload = dataRepresentation.getTextSeries("payload");
+            } catch (Exception e) {
+            }
+        }
+
+        String message = null;
+        if(dataRepresentation.hasProperty("message")) {
+            try {
+                message = dataRepresentation.getText("message");
+            } catch (Exception e) {
+            }
+        }
+
+        Long row = null;
+        if(dataRepresentation.hasProperty("row")) {
+            try {
+                row = dataRepresentation.getDigit("row");
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityStepErrorData functionalityStepErrorData = create(type, name, payload, message, row);
+        return functionalityStepErrorData;
+    }
+
     public DataRepresentation toDataRepresentation() {
         DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.create();
         if (type != null) {

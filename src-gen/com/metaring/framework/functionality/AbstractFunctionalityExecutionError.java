@@ -67,6 +67,34 @@ public abstract class AbstractFunctionalityExecutionError implements GeneratedCo
         return functionalityExecutionError;
     }
 
+    public static FunctionalityExecutionError fromObject(Object object) {
+
+        if(object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+
+        FunctionalityStackElementSeries stack = null;
+        if(dataRepresentation.hasProperty("stack")) {
+            try {
+                stack = dataRepresentation.get("stack", FunctionalityStackElementSeries.class);
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityStepErrorData errorData = null;
+        if(dataRepresentation.hasProperty("errorData")) {
+            try {
+                errorData = dataRepresentation.get("errorData", FunctionalityStepErrorData.class);
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityExecutionError functionalityExecutionError = create(stack, errorData);
+        return functionalityExecutionError;
+    }
+
     public DataRepresentation toDataRepresentation() {
         DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.create();
         if (stack != null) {

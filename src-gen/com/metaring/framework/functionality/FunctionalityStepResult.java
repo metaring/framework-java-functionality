@@ -95,6 +95,50 @@ public class FunctionalityStepResult implements GeneratedCoreType {
         return functionalityStepResult;
     }
 
+    public static FunctionalityStepResult fromObject(Object object) {
+
+        if(object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+
+        FunctionalityExecutionVerdictEnumerator verdict = null;
+        if(dataRepresentation.hasProperty("verdict")) {
+            try {
+                verdict = dataRepresentation.get("verdict", FunctionalityExecutionVerdictEnumerator.class);
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityStepErrorData errorData = null;
+        if(dataRepresentation.hasProperty("errorData")) {
+            try {
+                errorData = dataRepresentation.get("errorData", FunctionalityStepErrorData.class);
+            } catch (Exception e) {
+            }
+        }
+
+        String message = null;
+        if(dataRepresentation.hasProperty("message")) {
+            try {
+                message = dataRepresentation.getText("message");
+            } catch (Exception e) {
+            }
+        }
+
+        DataRepresentation result = null;
+        if(dataRepresentation.hasProperty("result")) {
+            try {
+                result = dataRepresentation.get("result");
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityStepResult functionalityStepResult = create(verdict, errorData, message, result);
+        return functionalityStepResult;
+    }
+
     public DataRepresentation toDataRepresentation() {
         DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.create();
         if (verdict != null) {

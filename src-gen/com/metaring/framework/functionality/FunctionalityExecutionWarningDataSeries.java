@@ -167,6 +167,19 @@ public class FunctionalityExecutionWarningDataSeries extends ArrayList<Functiona
         return new FunctionalityExecutionWarningDataSeries(list);
     }
 
+    public static FunctionalityExecutionWarningDataSeries fromObject(Object object) {
+        if (object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+        List<FunctionalityExecutionWarningData> list = new ArrayList<>();
+        for(DataRepresentation data : dataRepresentation) {
+            list.add(FunctionalityExecutionWarningData.fromJson(data.asText()));
+        }
+        return new FunctionalityExecutionWarningDataSeries(list);
+    }
+
     public DataRepresentation toDataRepresentation() {
         return Tools.FACTORY_DATA_REPRESENTATION.fromJson(toJson());
     }

@@ -66,6 +66,34 @@ public class FunctionalityStackElement implements GeneratedCoreType {
         return functionalityStackElement;
     }
 
+    public static FunctionalityStackElement fromObject(Object object) {
+
+        if(object == null) {
+            return null;
+        }
+
+        DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.fromObject(object);
+
+        String name = null;
+        if(dataRepresentation.hasProperty("name")) {
+            try {
+                name = dataRepresentation.getText("name");
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityExecutionStepEnumerator step = null;
+        if(dataRepresentation.hasProperty("step")) {
+            try {
+                step = dataRepresentation.get("step", FunctionalityExecutionStepEnumerator.class);
+            } catch (Exception e) {
+            }
+        }
+
+        FunctionalityStackElement functionalityStackElement = create(name, step);
+        return functionalityStackElement;
+    }
+
     public DataRepresentation toDataRepresentation() {
         DataRepresentation dataRepresentation = Tools.FACTORY_DATA_REPRESENTATION.create();
         if (name != null) {
