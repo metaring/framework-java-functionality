@@ -26,6 +26,10 @@ public class FunctionalityContextData extends HashMap<String, Object> {
         super();
     }
 
+    public Object put(String key, Object value) {
+        return super.put(key, value);
+    }
+
     public void putSafely(String key, Object value) {
         String keyString = key;
         if (super.containsKey(keyString)) {
@@ -34,12 +38,20 @@ public class FunctionalityContextData extends HashMap<String, Object> {
         super.put(keyString, value);
     }
 
+    public Object remove(String key) {
+        return super.remove(key);
+    }
+
     public Object removeSafely(String key) {
         String keyString = key;
         if (!super.containsKey(keyString)) {
             throw new RuntimeException("Context does not contains data with key " + keyString);
         }
         return super.remove(keyString);
+    }
+
+    public Object get(String key) {
+        return super.get(key);
     }
 
     public Boolean exists(String key) {
