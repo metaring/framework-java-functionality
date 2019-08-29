@@ -18,6 +18,10 @@ package com.metaring.framework.functionality;
 
 import java.util.HashMap;
 
+import com.metaring.framework.Tools;
+import com.metaring.framework.type.DataRepresentation;
+import com.metaring.framework.type.factory.DataRepresentationFactory;
+
 public class FunctionalityContextData extends HashMap<String, Object> {
 
     private static final long serialVersionUID = 3777454499159654269L;
@@ -60,5 +64,19 @@ public class FunctionalityContextData extends HashMap<String, Object> {
 
     public void purge() {
         super.clear();
+    }
+
+    public final DataRepresentation toDataRepresentation() {
+        DataRepresentationFactory dataRepresentationFactory = Tools.FACTORY_DATA_REPRESENTATION;
+        DataRepresentation dataRep = dataRepresentationFactory.create();
+        for(String key : keySet()) {
+            Object value = get(key);
+            try {
+                dataRep.add(key, dataRepresentationFactory.fromObject(value));
+            } catch(Exception e) {
+                dataRep.add(key, dataRepresentationFactory.fromJson(value == null ? "null" : value.toString()));
+            }
+        }
+        return dataRep;
     }
 }
