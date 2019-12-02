@@ -1,12 +1,12 @@
 /**
  *    Copyright 2019 MetaRing s.r.l.
- * 
+ *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
- * 
+ *
  *        http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *    Unless required by applicable law or agreed to in writing, software
  *    distributed under the License is distributed on an "AS IS" BASIS,
  *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -139,7 +139,8 @@ public class FunctionalitiesManager {
     private static final CompletableFuture<FunctionalityExecutionResult> executeWork(FunctionalityInfo functionalityInfo, Class<? extends Functionality> functionalityClass, Functionality callingFunctionality, Object input, boolean fromJson) {
         try {
             AbstractFunctionality functionality = FunctionalitiesProvider.getFunctionality(functionalityInfo, functionalityClass);
-            return functionality.execute(callingFunctionality == null ? new FunctionalityContext() : callingFunctionality.getContext(), fromJson ? functionality.getInputFromJson(input == null ? null : input.toString()) : input);
+            FunctionalityContext functionalityContext = callingFunctionality == null ? new FunctionalityContext() : callingFunctionality.getContext();
+            return functionality.execute(functionalityContext == null ? new FunctionalityContext() : functionalityContext, fromJson ? functionality.getInputFromJson(input == null ? null : input.toString()) : input);
         } catch (FunctionalityCreationException e) {
             return completedFuture(launchCreationUnmanagedError(callingFunctionality, e));
         }
