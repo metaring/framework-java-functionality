@@ -216,7 +216,9 @@ public abstract class AbstractFunctionality extends AbstractBaseController imple
 
     private static final FunctionalityExecutionResult buildResult(final FunctionalityInstance functionalityInstance, Class<?> outputClass) {
         FunctionalityExecutionError executionError = functionalityInstance.functionalityContext.executionError;
+        functionalityInstance.functionalityContext.executionError = null;
         FunctionalityExecutionWarningDataSeries warnings = functionalityInstance.functionalityContext.getWarnings();
+        functionalityInstance.functionalityContext.warnings = new LinkedList<>();
         FunctionalityExecutionVerdictEnumerator verdict = executionError == null ? warnings == null || warnings.isEmpty() ? FunctionalityExecutionVerdictEnumerator.SUCCESS : FunctionalityExecutionVerdictEnumerator.WARNING : FunctionalityExecutionVerdictEnumerator.FAULT;
         functionalityInstance.functionalityContext.getStack().removeLast();
         if (functionalityInstance.functionalityContext.getStack().isEmpty()) {
